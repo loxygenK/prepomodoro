@@ -15,7 +15,7 @@ jobs:
         include:
           - cmd: "clippy"
             title: "Check the codebase using Clippy"
-          - cmd: "fmt"
+          - cmd: "fmt --check --message-format short"
             title: "Check if the file is formatted correctly or not"
           - cmd: "test"
             title: "Check if the test passes"
@@ -24,6 +24,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Cache
+        uses: Swatinem/rust-cache@v2
 
       - name: Install toolchains
         run: rustup update
