@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        includes:
+        include:
           - cmd: "clippy"
             title: "Check the codebase using Clippy"
           - cmd: "fmt"
