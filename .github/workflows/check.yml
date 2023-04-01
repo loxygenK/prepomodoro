@@ -12,7 +12,6 @@ jobs:
 
     strategy:
       matrix:
-        cmd: ["clippy", "fmt", "test"]
         includes:
           - cmd: "clippy"
             title: "Check the codebase using Clippy"
