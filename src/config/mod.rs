@@ -1,18 +1,23 @@
+use serde::{Serialize, Deserialize};
+
 pub mod convert;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Configuration {
-    tasks: Vec<Task>,
+    pub tasks: Vec<Task>,
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Task {
     name: String,
+    #[serde(default)]
     intervals: Interval,
+    #[serde(default)]
     checklist: CheckList,
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(untagged)]
 pub enum Interval {
     SimplePomodoro {
         active: u64,
@@ -37,10 +42,14 @@ impl Default for Interval {
     }
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CheckList {
+    #[serde(default)]
     before_start: Vec<String>,
+    #[serde(default)]
     before_iteration: Vec<String>,
+    #[serde(default)]
     before_rest: Vec<String>,
+    #[serde(default)]
     after_finish: Vec<String>,
 }

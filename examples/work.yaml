@@ -1,4 +1,4 @@
-task:
+tasks:
   - name: Start working
     interval:
       active: 50
