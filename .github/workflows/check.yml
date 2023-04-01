@@ -1,0 +1,33 @@
+name: Check
+
+on:
+  pull_request:
+  push:
+    branch:
+      main
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        cmd: ["clippy", "fmt", "test"]
+        includes:
+          - cmd: "clippy"
+            title: "Check the codebase using Clippy"
+          - cmd: "fmt"
+            title: "Check if the file is formatted correctly or not"
+          - cmd: "test"
+            title: "Check if the test passes"
+
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install toolchains
+        run: rustup update
+
+      - name: ${{ matrix.title }}
+        run: cargo ${{ matrix.cmd }}
