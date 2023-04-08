@@ -38,11 +38,13 @@ pub enum Kind {
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct CheckList {
-    pub before_start: Vec<String>,
-    pub before_iteration: Vec<String>,
-    pub before_rest: Vec<String>,
-    pub after_finish: Vec<String>,
+    pub before_start: Vec<CheckListElement>,
+    pub before_iteration: Vec<CheckListElement>,
+    pub before_rest: Vec<CheckListElement>,
+    pub after_finish: Vec<CheckListElement>,
 }
+
+pub type CheckListElement = String;
 
 #[cfg(test)]
 mod tests {
