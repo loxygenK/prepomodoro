@@ -7,6 +7,9 @@ use std::thread::sleep;
 use std::time::{Duration, Instant};
 use tui::backend::CrosstermBackend;
 use tui::{Frame, Terminal};
+use tui::style::{Color, Style};
+use tui::widgets::{Block, Paragraph};
+use crate::msg;
 
 pub mod checklist;
 pub mod components;
@@ -27,6 +30,9 @@ pub struct FrameEvent {
 }
 
 impl TUI {
+    const MIN_WIDTH: u16 = 20;
+    const MIN_HEIGHT: u16 = 8;
+
     pub fn start() -> Result<Self, io::Error> {
         terminal::enable_raw_mode()?;
         let mut stdout = io::stdout();
@@ -47,7 +53,20 @@ impl TUI {
     }
 
     pub fn draw(&mut self, drawer: impl FnOnce(&mut TerminalFrame)) -> Result<(), io::Error> {
-        self.terminal.draw(drawer).map(|_| ())
+        self.terminal.draw(|frame| {
+            let screen = frame.size();
+            if screen.width < Self::MIN_WIDTH || screen.height < Self::MIN_HEIGHT {
+                frame.render_widget(
+                    Paragraph::new(msg::too_small_screen(Self::MIN_WIDTH, Self::MIN_HEIGHT))
+                        .style(Style::default().fg(Color::LightMagenta)),
+                    screen
+                );
+
+                return;
+            }
+
+            drawer(frame);
+        }).map(|_| ())
     }
 
     pub fn wait(&mut self, rate: f64) -> Result<FrameEvent, io::Error> {

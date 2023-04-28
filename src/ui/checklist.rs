@@ -37,7 +37,7 @@ pub fn show_checklist(
             frame.render_widget(
                 Paragraph::new(vec![
                     Spans::from(Span::styled(
-                        format!("* {} *", task.name),
+                        format!("* {} [{}, {}] *", task.name, frame.size().width, frame.size().height),
                         Style::default().fg(Color::LightYellow),
                     )),
                     Spans::from(msg::checklist_ready()),
